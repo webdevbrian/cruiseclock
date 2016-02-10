@@ -2,17 +2,17 @@
 var config = {
 
   // cruiseDate needs to be in MM/DD/YYYY HH:MM PM/AM format
-  cruiseDate: '03/28/2015 2:00 AM', 
+  cruiseDate: '03/26/2016 2:00 AM', 
 
   // Set to false if you don't want the app to place the boat horn every hour
   playBoatHorn: 'true',
 
   // Location to display weather info from.  I usually set this as my debarking port but you can set it to whatever you'd like.
   // this will be updated every 5 minutes.  It must be in zipcode format.
-  weatherLocation: '00901',
+  weatherLocation: '33301',
 
   // Weather location name.  Keep this short.
-  weatherLocationName: 'San Juan',
+  weatherLocationName: 'Ft. Lauderdale',
 
   // Set the weather degree unit (c for celsius or f for fahrenheit )
   weatherUnit: 'F',
