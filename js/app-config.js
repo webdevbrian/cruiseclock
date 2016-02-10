@@ -19,7 +19,7 @@ var config = {
 
   // Change this to your cruise line's name and the boat you're on.  Example: carnival breeze. This will pull in associated rotating
   // background images of your boat / cruise line which will rotate in the background of the clock.
-  cruiseName: 'celebrity summit',
+  cruiseName: 'emerald princess',
 
   // (OPTIONAL)Just in case if you want to rename the count down image, it must be placed in the /images/ folder
   cruiseTimeImage: 'cruisetime.gif',
