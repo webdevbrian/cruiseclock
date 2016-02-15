@@ -15,26 +15,26 @@ $(document).ready(function() {
       
     var clickHandler = ('ontouchstart' in document.documentElement ? "touchstart" : "click");
     $(document).bind(clickHandler, function(e) {
-        if(hasInit!=true){
+      if(hasInit!=true){
 
-          // Honk da boat
-          $('#boatHonk').get(0).play();
+        // Honk da boat
+        $('#boatHonk').get(0).play();
 
-          // Init timer
-          timer = setInterval(showRemaining, 1000);
+        // Init timer
+        timer = setInterval(showRemaining, 1000);
 
-          // Init weather update every 20 minutes
-          updateWeather = setInterval(weatherUpdate, 1200000);
+        // Init weather update every 20 minutes
+        updateWeather = setInterval(weatherUpdate, 1200000);
 
-          // Init weather & time remaining on first load
-          weatherUpdate();
-          showRemaining();
+        // Init weather & time remaining on first load
+        weatherUpdate();
+        showRemaining();
 
-          $('#version').hide();
-          $('#touchStart').hide();
+        $('#version').hide();
+        $('#touchStart').hide();
 
-          hasInit = true;
-        };
+        hasInit = true;
+      };
 
     });
 
@@ -53,11 +53,11 @@ $(document).ready(function() {
 
       // Count down is over, let's show a message that it's cruise time!
       if (timeRemaining <= 0) {
-          clearInterval(timer);
-          $('#countdown').html('');
-          $('#countdown').html('<img src="images/'+config.cruiseTimeImage+'" />');
-          timerTime();
-          return;
+        clearInterval(timer);
+        $('#countdown').html('');
+        $('#countdown').html('<img src="images/'+config.cruiseTimeImage+'" />');
+        timerTime();
+        return;
       };
 
       var days = Math.floor(timeRemaining / _day);
@@ -96,7 +96,7 @@ $(document).ready(function() {
         zipcode: config.weatherLocation,
         unit: config.weatherUnit,
         success: function(weather) {
-          html = 'Current weather in '+config.weatherLocationName+':<br/>' + weather.temp + config.weatherUnit +', ' + weather.currently + '<img src="'+weather.thumbnail+'" />';
+          html = 'Current weather in '+weather.city+':<br/>' + weather.temp + config.weatherUnit +', ' + weather.currently + '<img src="'+weather.thumbnail+'" />';
           $("#weather").html(html);
         },
         error: function(error) {
@@ -155,17 +155,15 @@ $(document).ready(function() {
           array[currentIndex] = array[randomIndex];
           array[randomIndex] = temporaryValue;
         }
-
         return array;
       };
 
       // Shuffle the flickr images
       shuffle(flickrImgs);
 
-      // I'll clean this up later on
-      $.backstretch([flickrImgs[0],flickrImgs[1],flickrImgs[2],flickrImgs[3],flickrImgs[4],flickrImgs[5],flickrImgs[6],flickrImgs[7],flickrImgs[8],flickrImgs[9],flickrImgs[10],flickrImgs[11],flickrImgs[12],flickrImgs[13],flickrImgs[14],flickrImgs[15],flickrImgs[16],flickrImgs[17],flickrImgs[18],flickrImgs[19],flickrImgs[20],flickrImgs[21],flickrImgs[22],flickrImgs[23],flickrImgs[24],flickrImgs[25],flickrImgs[26],flickrImgs[27],flickrImgs[28],flickrImgs[29],flickrImgs[30],flickrImgs[31],flickrImgs[32],flickrImgs[33],flickrImgs[34],flickrImgs[35],flickrImgs[36],flickrImgs[37],flickrImgs[38],flickrImgs[39],flickrImgs[40],flickrImgs[41],flickrImgs[42],flickrImgs[43],flickrImgs[44],flickrImgs[45],flickrImgs[46],flickrImgs[47],flickrImgs[48]], {duration: 4000, fade: 500});
+      $.backstretch(flickrImgs);
 
     });
 
 
-  }); // DOM Ready
+}); // DOM Ready

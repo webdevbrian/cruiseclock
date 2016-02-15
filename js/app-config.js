@@ -11,9 +11,6 @@ var config = {
   // this will be updated every 5 minutes.  It must be in zipcode format.
   weatherLocation: '33301',
 
-  // Weather location name.  Keep this short.
-  weatherLocationName: 'Ft. Lauderdale',
-
   // Set the weather degree unit (c for celsius or f for fahrenheit )
   weatherUnit: 'F',
 
