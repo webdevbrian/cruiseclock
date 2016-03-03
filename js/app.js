@@ -3,22 +3,23 @@ $(document).ready(function() {
     // Defaults
     var hasInit;
 
-    // Scroll and hide address bar on load
+    // Scroll and hide address bar on load, useful for mobile devices like iOS to hide top
+    // address bar to increase initial viewport size
     window.addEventListener("load",function() {
       setTimeout(function(){
         window.scrollTo(0, 1);
       }, 0);
     });
 
-    // Init clock on touch (needs a touch event to have the boat honk sound effect work)
-    //$(document).bind( "touchstart", function(){
-      
-    var clickHandler = ('ontouchstart' in document.documentElement ? "touchstart" : "click");
-    $(document).bind(clickHandler, function(e) {
+    // Init clock on touch (needs a touch event to have the boat honk sound effect work - thanks iOS!)
+    var clickTouch = ('ontouchstart' in document.documentElement ? "touchstart" : "click");
+    $(document).bind(clickTouch, function(e) {
       if(hasInit!=true){
 
         // Honk da boat
-        $('#boatHonk').get(0).play();
+        if (config.playBoatHorn){
+          boatHonk();
+        }
 
         // Init timer
         timer = setInterval(showRemaining, 1000);
@@ -64,14 +65,14 @@ $(document).ready(function() {
       var hours = Math.floor((timeRemaining % _day) / _hour);
       var minutes = Math.floor((timeRemaining % _hour) / _minute);
       var seconds = Math.floor((timeRemaining % _minute) / _second);
-      var dayDays = ' days';
+      var dayDays = 'days';
 
       if(days == 1){ dayDays = ' day' } else if( days == 0) { dayDays = ' days' };
 
-      $('#countdown').html('<div id="days">' + days + dayDays + '</div><div id="hours">' + hours + ' hrs' + '</div><div id="minutes">' + minutes + ' mins' + '</div><div id="seconds">' + seconds + ' secs' + '</div>');
+      $('#countdown').html('<div id="days">' + days + ' ' + dayDays + '</div><div id="hours">' + hours + ' hrs' + '</div><div id="minutes">' + minutes + ' mins' + '</div><div id="seconds">' + seconds + ' secs' + '</div>');
 
       // Fire off the boat horn every hour
-      if (config.playBoatHorn == 'true'){
+      if (config.playBoatHorn){
         if(minutes=='0' && seconds =='0'){
           boatHonk();
         };
@@ -89,7 +90,7 @@ $(document).ready(function() {
     function weatherUpdate() {
 
       // Clear the old weather content
-      $('#weather').html('');
+      $('#weather').html('LOADING');
 
       // Init Simple Weather and populate #weather
       $.simpleWeather({
@@ -107,63 +108,69 @@ $(document).ready(function() {
     };
 
     // Init Flickr API, and create backstretch instance
-    var makeFlickrRequest = function(options, cb) {
-      var url, item, first;
+    if(!config.showWebcams){
+      var makeFlickrRequest = function(options, cb) {
+        var url, item, first;
 
-      url = "https://api.flickr.com/services/rest/";
-      first = true;
-      $.each(options, function(key, value) {
-        url += (first ? "?" : "&") + key + "=" + value;
-        first = false;
+        url = "https://api.flickr.com/services/rest/";
+        first = true;
+        $.each(options, function(key, value) {
+          url += (first ? "?" : "&") + key + "=" + value;
+          first = false;
+        });
+
+        $.get(url, function(data) { cb(data); });
+
+      };
+
+      var options = {
+        "api_key": "b1e28f8678b531648d4601d5db96adfb",
+        "method": "flickr.photos.search",
+        "format": "json",
+        "safe_search": "1",
+        "nojsoncallback": "1",
+        "media": "photos",
+        "tags": config.cruiseName
+      };
+
+
+      makeFlickrRequest(options, function(data) {
+        // We need to construct an array of the correctly formed image urls for backstretch
+        var flickrImgs = [];
+        for (var i=0;i<99;i++) {
+          var url = 'https://farm' + data['photos']['photo'][i].farm + '.staticflickr.com/' + data['photos']['photo'][i].server + '/' + data['photos']['photo'][i].id + '_' + data['photos']['photo'][i].secret + '_z.jpg';
+          flickrImgs.push(url);
+        };
+
+        // Shuffle the flickr images
+        shuffle(flickrImgs);
+
+        // http://www.kroooz-cams.com/terry/netcam.jpg - st. maarten
+
+        // Call backstretch 
+        $.backstretch(flickrImgs);
       });
-
-      $.get(url, function(data) { cb(data); });
-
-    };
-
-    var options = {
-      "api_key": "b1e28f8678b531648d4601d5db96adfb",
-      "method": "flickr.photos.search",
-      "format": "json",
-      "safe_search": "1",
-      "nojsoncallback": "1",
-      "media": "photos",
-      "tags": config.cruiseName
-    };
-
-
-    makeFlickrRequest(options, function(data) {
-
-      // We need to construct an array of the correctly formed image urls for backstretch
-      var flickrImgs = [];
-      for (var i=0;i<49;i++) {
-        var url = 'https://farm' + data['photos']['photo'][i].farm + '.staticflickr.com/' + data['photos']['photo'][i].server + '/' + data['photos']['photo'][i].id + '_' + data['photos']['photo'][i].secret + '_z.jpg';
-        flickrImgs.push(url);
-      };
-
-      // Let's shuffle the flickr images to make them random from image to image
-      function shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-        while (0 !== currentIndex) {
-
-          // Pick a remaining element...
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-
-          // And swap it with the current element.
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
-        }
-        return array;
-      };
-
-      // Shuffle the flickr images
-      shuffle(flickrImgs);
-
-      $.backstretch(flickrImgs);
-
-    });
+    } else {
+      // Show webcams of destinations instead of flickr images
+      $.backstretch('http://www.kroooz-cams.com/terry/netcam.jpg');
+    }
 
 
 }); // DOM Ready
+
+// Shuffle an array
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+};
