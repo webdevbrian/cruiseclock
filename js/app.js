@@ -108,62 +108,45 @@ $(document).ready(function() {
     };
 
     // Init Flickr API, and create backstretch instance
-    if(!config.showWebcams){
-      var makeFlickrRequest = function(options, cb) {
-        var url, item, first;
+    var makeFlickrRequest = function(options, cb) {
+      var url, item, first;
 
-        url = "https://api.flickr.com/services/rest/";
-        first = true;
-        $.each(options, function(key, value) {
-          url += (first ? "?" : "&") + key + "=" + value;
-          first = false;
-        });
-
-        $.get(url, function(data) { cb(data); });
-
-      };
-
-      var options = {
-        "api_key": "b1e28f8678b531648d4601d5db96adfb",
-        "method": "flickr.photos.search",
-        "format": "json",
-        "safe_search": "1",
-        "nojsoncallback": "1",
-        "media": "photos",
-        "tags": config.cruiseName
-      };
-
-
-      makeFlickrRequest(options, function(data) {
-        // We need to construct an array of the correctly formed image urls for backstretch
-        var flickrImgs = [];
-        for (var i=0;i<99;i++) {
-          var url = 'https://farm' + data['photos']['photo'][i].farm + '.staticflickr.com/' + data['photos']['photo'][i].server + '/' + data['photos']['photo'][i].id + '_' + data['photos']['photo'][i].secret + '_z.jpg';
-          flickrImgs.push(url);
-        };
-
-        // Shuffle the flickr images
-        shuffle(flickrImgs);
-
-        // Call backstretch 
-        $.backstretch(flickrImgs);
+      url = "https://api.flickr.com/services/rest/";
+      first = true;
+      $.each(options, function(key, value) {
+        url += (first ? "?" : "&") + key + "=" + value;
+        first = false;
       });
-    } else {
 
-      // Show webcams of destinations instead of flickr images and set a timer to refresh it every 5 minutes
-      function refreshCam() {
-        var camURL = config.webCamUrl+'?'+Math.floor(Math.random() * 9999);
+      $.get(url, function(data) { cb(data); });
 
-        $('#bgIMG').attr('src',camURL);
-        
-        console.log(camURL);
-      }
-      function camRefreshInterval() {
-        setInterval(refreshCam, 300000 );
-      }; 
-      refreshCam();
-      camRefreshInterval();
-    }
+    };
+
+    var options = {
+      "api_key": "b1e28f8678b531648d4601d5db96adfb",
+      "method": "flickr.photos.search",
+      "format": "json",
+      "safe_search": "1",
+      "nojsoncallback": "1",
+      "media": "photos",
+      "tags": config.cruiseName
+    };
+
+
+    makeFlickrRequest(options, function(data) {
+      // We need to construct an array of the correctly formed image urls for backstretch
+      var flickrImgs = [];
+      for (var i=0;i<99;i++) {
+        var url = 'https://farm' + data['photos']['photo'][i].farm + '.staticflickr.com/' + data['photos']['photo'][i].server + '/' + data['photos']['photo'][i].id + '_' + data['photos']['photo'][i].secret + '_z.jpg';
+        flickrImgs.push(url);
+      };
+
+      // Shuffle the flickr images
+      shuffle(flickrImgs);
+
+      // Call backstretch 
+      $.backstretch(flickrImgs);
+    });
 
 }); // DOM Ready
 
