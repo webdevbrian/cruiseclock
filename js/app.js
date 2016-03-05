@@ -152,8 +152,10 @@ $(document).ready(function() {
 
       // Show webcams of destinations instead of flickr images and set a timer to refresh it every 5 minutes
       function refreshCam() {
-        var camURL = config.webCamUrl+'?'+Math.floor(Math.random() * 9999999999999);
-        $.backstretch(camURL);
+        var camURL = config.webCamUrl+'?'+Math.floor(Math.random() * 9999);
+
+        $('#bgIMG').attr('src',camURL);
+        
         console.log(camURL);
       }
       function camRefreshInterval() {
