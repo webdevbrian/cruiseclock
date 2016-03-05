@@ -126,6 +126,8 @@ $(document).ready(function() {
       "api_key": "b1e28f8678b531648d4601d5db96adfb",
       "method": "flickr.photos.search",
       "format": "json",
+      "page": 1,
+      "per_page": 50,
       "safe_search": "1",
       "nojsoncallback": "1",
       "media": "photos",
@@ -136,7 +138,7 @@ $(document).ready(function() {
     makeFlickrRequest(options, function(data) {
       // We need to construct an array of the correctly formed image urls for backstretch
       var flickrImgs = [];
-      for (var i=0;i<99;i++) {
+      for (var i=0;i<49;i++) {
         var url = 'https://farm' + data['photos']['photo'][i].farm + '.staticflickr.com/' + data['photos']['photo'][i].server + '/' + data['photos']['photo'][i].id + '_' + data['photos']['photo'][i].secret + '_z.jpg';
         flickrImgs.push(url);
       };
