@@ -12,7 +12,7 @@ $(document).ready(function() {
     });
 
     // Init clock on touch (needs a touch event to have the boat honk sound effect work - thanks iOS!)
-    var clickTouch = ('ontouchstart' in document.documentElement ? "touchstart" : "click");
+    var clickTouch = ('ontouchend' in document.documentElement ? "touchend" : "click");
     $(document).bind(clickTouch, function(e) {
       if(hasInit!=true){
 
