@@ -21,6 +21,9 @@ var config = {
   // Show only webcams as background images
   showWebcams: true,
 
+  //If true, what is the webcam URL?
+  webCamUrl: 'http://www.kroooz-cams.com/terry/netcam.jpg',
+
   // (OPTIONAL)Just in case if you want to rename the count down image, it must be placed in the /images/ folder
   cruiseTimeImage: 'cruisetime.gif',
 
