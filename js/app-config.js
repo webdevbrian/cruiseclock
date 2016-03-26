@@ -2,7 +2,7 @@
 var config = {
 
   // cruiseDate needs to be in MM/DD/YYYY HH:MM PM/AM format
-  cruiseDate: '03/26/2016 2:00 AM', 
+  cruiseDate: '03/26/2016 4:45 AM', 
 
   // Set to false if you don't want the app to place the boat horn every hour
   playBoatHorn: true,
