@@ -145,16 +145,23 @@ $(document).ready(function() {
         // Shuffle the flickr images
         shuffle(flickrImgs);
 
-        // http://www.kroooz-cams.com/terry/netcam.jpg - st. maarten
-
         // Call backstretch 
         $.backstretch(flickrImgs);
       });
     } else {
-      // Show webcams of destinations instead of flickr images
-      $.backstretch('http://www.kroooz-cams.com/terry/netcam.jpg');
-    }
 
+      // Show webcams of destinations instead of flickr images and set a timer to refresh it every 5 minutes
+      function refreshCam() {
+        var camURL = config.webCamUrl+'?'+Math.floor(Math.random() * 9999999999999);
+        $.backstretch(camURL);
+        console.log(camURL);
+      }
+      function camRefreshInterval() {
+        setInterval(refreshCam, 300000 );
+      }; 
+      refreshCam();
+      camRefreshInterval();
+    }
 
 }); // DOM Ready
 
