@@ -1,0 +1,23 @@
+{
+  "name": "cruiseclock",
+  "version": "1.0.0",
+  "description": "Use for the kinney family cruise countdown.  Feel free to fork and use for your own needs!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webdevbrian/cruiseclock.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webdevbrian/cruiseclock/issues"
+  },
+  "homepage": "https://github.com/webdevbrian/cruiseclock#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
